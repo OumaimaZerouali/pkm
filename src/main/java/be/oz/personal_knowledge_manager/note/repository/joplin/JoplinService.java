@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +34,7 @@ public class JoplinService implements NoteRepository {
 
     @Override
     public List<Note> findAllNotes() {
-        var url = joplinUrl + "?token=" + joplinToken;
+        var url = joplinUrl + "/notes?token=" + joplinToken;
         var response = restTemplate.getForObject(url, JoplinNotes.class);
 
         if (response == null || response.items() == null) {
@@ -43,8 +45,45 @@ public class JoplinService implements NoteRepository {
                 .map(item -> Note.builder()
                         .id(item.id())
                         .title(item.title())
+                        .content(item.body())
+                        .content_html(item.body_html())
+                        .author(item.author())
+                        .source_url(item.source_url())
+                        .folder(item.parent_id())
+                        .created(Instant.ofEpochSecond(item.created_time())
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime())
+                        .updated(Instant.ofEpochSecond(item.updated_time())
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime())
                         .build())
                 .toList();
+    }
+
+    @Override
+    public Note getNoteById(String id) {
+        var url = joplinUrl + "/notes/" + id + "?token=" + joplinToken + "&fields=id,parent_id,title,body,author,source_url";
+        var response = restTemplate.getForObject(url, JoplinNote.class);
+
+        if (response == null) {
+            return null;
+        }
+
+        return Note.builder()
+                .id(response.id())
+                .title(response.title())
+                .content(response.body())
+                .content_html(response.body_html())
+                .author(response.author())
+                .source_url(response.source_url())
+                .folder(response.parent_id())
+                .created(Instant.ofEpochSecond(response.created_time())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime())
+                .updated(Instant.ofEpochSecond(response.updated_time())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime())
+                .build();
     }
 
     @Override

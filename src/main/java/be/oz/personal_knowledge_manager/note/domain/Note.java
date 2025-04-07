@@ -13,6 +13,9 @@ public class Note {
     private String id;
     private String title;
     private String content;
+    private String content_html;
+    private String author;
+    private String source_url;
     private String folder;
     private LocalDateTime created;
     private LocalDateTime updated;

@@ -1,0 +1,29 @@
+<div class="filter-container">
+  <label for="folderFilter">Filter by Folder:</label>
+  <select id="folderFilter" [(ngModel)]="selectedFolder" (change)="filterNotes()">
+    <option value="">All Folders</option>
+    @for (folder of folders; track folder) {
+      <option [value]="folder">{{ folder }}</option>
+    }
+  </select>
+</div>
+
+<div class="notes">
+  @for (note of notes; track note) {
+    <div class="note-card">
+      <div class="note-header">
+        <h3>{{ note.title }}</h3>
+      </div>
+      <div class="note-body">
+        <p><strong>Author:</strong> {{ note.author }}</p>
+        <p><strong>Source:</strong> <a href="{{ note.source_url }}" target="_blank">{{ note.source_url }}</a></p>
+        <p><strong>Folder:</strong> {{ getFolderName(note.folder) }}</p>
+        <p><strong>Created:</strong> {{ note.created }}</p>
+        <p><strong>Updated:</strong> {{ note.updated }}</p>
+      </div>
+      <div class="note-footer">
+        <a [routerLink]="['/notes', note.id]" class="btn btn-primary">View Full Note</a>
+      </div>
+    </div>
+  }
+</div>

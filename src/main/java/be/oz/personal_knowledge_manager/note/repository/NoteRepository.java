@@ -7,4 +7,5 @@ import java.util.List;
 public interface NoteRepository {
     List<Note> findAllNotes();
     Note createNote(Note note);
+    Note getNoteById(String id);
 }

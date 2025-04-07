@@ -1,0 +1,102 @@
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  font-family: Arial, sans-serif;
+}
+
+.filter-container label {
+  font-size: 16px;
+  color: #555;
+  margin-right: 10px;
+}
+
+.filter-container select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  color: #555;
+}
+
+.filter-container select:focus {
+  border-color: rgba(0, 0, 0, 0.82);
+  outline: none;
+}
+
+.filter-container option {
+  padding: 8px;
+}
+
+
+.notes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.note-card {
+  width: 100%;
+  max-width: 300px;
+  margin: 0;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.note-header {
+  background-color: rgba(0, 0, 0, 0.82);
+  color: white;
+  padding: 15px;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+}
+
+.note-header h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.note-body {
+  margin-top: 10px;
+}
+
+.note-body p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.note-body strong {
+  font-weight: bold;
+}
+
+.note-body a {
+  color: rgba(0, 0, 0, 0.82);
+  text-decoration: none;
+}
+
+.note-body a:hover {
+  text-decoration: underline;
+}
+
+.note-content {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: pre-wrap;
+}

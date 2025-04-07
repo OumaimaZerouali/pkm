@@ -1,0 +1,17 @@
+@if (note) {
+  <div class="note-details-container">
+    <div class="note-header">
+      <h3>{{ note.title }}</h3>
+      <p><strong>Author:</strong> {{ note.author }}</p>
+      <p><strong>Source:</strong> <a href="{{ note.source_url }}" target="_blank">{{ note.source_url }}</a></p>
+    </div>
+
+    <div class="note-body">
+      <p><strong>Folder:</strong> {{ note.folder }}</p>
+      <p><strong>Created:</strong> {{ note.created | date }}</p>
+      <p><strong>Updated:</strong> {{ note.updated | date }}</p>
+    </div>
+
+    <markdown [data]="note.content"></markdown>
+  </div>
+}
