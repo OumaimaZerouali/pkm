@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:pkm_frontend": "node dist/pkm_frontend/server/server.mjs"
+    "serve:ssr:pkm_frontend": "node dist/pkm_frontend/server/server.mjs",
+    "generate-api": "npx openapi-generator-cli generate -i ../openapi.yaml -g typescript-angular -o libs/api"
   },
   "private": true,
   "dependencies": {

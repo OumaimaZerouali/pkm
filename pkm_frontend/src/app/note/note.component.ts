@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { NoteService } from './note.service';
-import { FolderService } from './folder.service';
-import { FormsModule } from '@angular/forms';
+import {Component, inject, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {RouterLink} from '@angular/router';
+import {FoldersService, NotesService} from '../../../libs/api';
 
 @Component({
   selector: 'app-note',
@@ -20,10 +19,8 @@ export class NoteComponent implements OnInit {
   folders: string[] = [];
   selectedFolder: string = '';
 
-  constructor(
-    private noteService: NoteService,
-    private folderService: FolderService
-  ) { }
+  private noteService: NotesService = inject(NotesService);
+  private folderService: FoldersService = inject(FoldersService);
 
   ngOnInit() {
     this.loadNotes();

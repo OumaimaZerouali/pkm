@@ -26,9 +26,12 @@
         <tag/>
         <url/>
     </scm>
+
     <properties>
         <java.version>21</java.version>
+        <openapi-generator-maven-plugin.version>7.12.0</openapi-generator-maven-plugin.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -46,9 +49,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.parser.v3</groupId>
+            <artifactId>swagger-parser</artifactId>
+            <version>2.1.24</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
         </dependency>
 
         <dependency>
@@ -56,11 +76,7 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -79,6 +95,36 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <generatorName>spring</generatorName>
+                            <inputSpec>openapi.yaml</inputSpec>
+                            <apiPackage>be.oz.personal_knowledge_manager.api</apiPackage>
+                            <modelPackage>be.oz.personal_knowledge_manager.model</modelPackage>
+                            <modelNameSuffix>DTO</modelNameSuffix>
+                            <configOptions>
+                                <!-- Additional config options to avoid duplicate constructor generation -->
+                                <interfaceOnly>true</interfaceOnly>
+                                <dateLibrary>java8-localdatetime</dateLibrary>
+                                <additionalModelTypeAnnotations>@lombok.Builder @lombok.AllArgsConstructor</additionalModelTypeAnnotations>
+                                <serializableModel>true</serializableModel>
+                                <generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
+                                <requestMappingMode>none</requestMappingMode>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                                <useSpringBoot3>true</useSpringBoot3>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
