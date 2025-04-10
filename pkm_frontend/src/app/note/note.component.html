@@ -65,9 +65,9 @@
     Chat with AI
   </button>
   @if (chatbotModalOpen) {
-    <div class="chatbot-modal">
+    <div class="chatbot-floating-window">
       <app-chatbot></app-chatbot>
-      <button class="close-modal" (click)="toggleChatbotModal()">Close</button>
+      <button class="close-floating" (click)="toggleChatbotModal()">✕</button>
     </div>
   }
 </div>

@@ -1,8 +1,8 @@
-import {Component, inject} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {AIRequest, AiService, ChatWithAI200Response, ChatWithAIRequest, FoldersService, Note} from '../../../libs/api';
 import {FormsModule} from '@angular/forms';
 import {MarkdownPipe} from '../other/markdown.pipe';
-import {catchError, map, Observable, of, tap} from 'rxjs';
+import {catchError, map, Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-chatbot',
@@ -10,7 +10,7 @@ import {catchError, map, Observable, of, tap} from 'rxjs';
   imports: [FormsModule, MarkdownPipe],
   styleUrls: ['./chatbot.component.scss']
 })
-export class ChatbotComponent {
+export class ChatbotComponent implements AfterViewChecked{
   messages: { user: string, ai: string }[] = [];
   currentMessage = '';
   isLoading = false;
@@ -18,6 +18,12 @@ export class ChatbotComponent {
 
   private ai: AiService = inject(AiService);
   private folderService: FoldersService = inject(FoldersService);
+
+  @ViewChild('chatMessages') private chatMessages!: ElementRef;
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
 
   sendMessage() {
     if (!this.currentMessage.trim()) return;
@@ -109,12 +115,9 @@ export class ChatbotComponent {
 
   getFolderIdByName(folderName: string): Observable<string | null> {
     return this.folderService.getFolders().pipe(
-      tap(folders => console.log('Fetched folders:', folders)),
       map(folders => {
-        console.log("Fetched folders:", folders);
         const folder = folders.find(f => f.name.toLowerCase() === folderName.toLowerCase());
         if (folder) {
-          console.log("Found folder:", folder);
           return folder.id;
         } else {
           console.log("Folder not found.");
@@ -128,4 +131,9 @@ export class ChatbotComponent {
     );
   }
 
+  scrollToBottom(): void {
+    try {
+      this.chatMessages.nativeElement.scrollTop = this.chatMessages.nativeElement.scrollHeight;
+    } catch (err) { }
+  }
 }

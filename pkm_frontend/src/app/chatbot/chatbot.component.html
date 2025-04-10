@@ -1,5 +1,5 @@
-<div class="chatbot-container">
-  <div class="chatbot-messages">
+<div class="chatbot-inner">
+  <div class="chatbot-messages" #chatMessages>
     @for (message of messages; track message) {
       <div class="chat-message">
         <div class="user-message"><strong>You:</strong> {{ message.user }}</div>
@@ -15,7 +15,7 @@
     <input [(ngModel)]="currentMessage"
            (keyup.enter)="sendMessage()"
            [placeholder]="'Type your message...'"
-           [disabled]="isLoading"/>
+           [disabled]="isLoading" />
     <button (click)="sendMessage()" [disabled]="isLoading">Send</button>
   </div>
 
