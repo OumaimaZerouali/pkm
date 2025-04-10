@@ -24,11 +24,12 @@ public class SecurityConfig {
 
         http.cors(Customizer.withDefaults());
 
-        http.securityMatcher("/api/**")
+        http.securityMatcher("/**")
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(HttpMethod.POST, "/notes").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/notes").permitAll()
                         .requestMatchers(HttpMethod.GET, "/notes").permitAll()
                         .requestMatchers(HttpMethod.GET, "/notes/*").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/notes/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/folders/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/prompt/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/prompt/*").permitAll()

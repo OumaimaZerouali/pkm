@@ -7,10 +7,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateNoteByIdUseCase {
+public class CreateOrUpdateNoteUseCase {
     private final NoteRepository repository;
 
-    public Note execute(Note note, String id) {
-        return repository.updateNoteById(note, note.getId());
+    public Note execute(Note note) {
+        var existingNote = repository.getNoteById(note.getId());
+
+        if (existingNote != null) {
+            return repository.updateNoteById(note, note.getId());
+        }
+
+        return repository.createNote(note);
     }
 }

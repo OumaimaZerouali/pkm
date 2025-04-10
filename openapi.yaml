@@ -24,24 +24,29 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/note'
-    post:
+    put:
       tags:
         - notes
-      summary: Create a new note
-      operationId: createNote
+      summary: Create or update a note
+      operationId: createOrUpdateNote
       requestBody:
-        description: The note to create
+        description: The note to create or update
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/note'
       responses:
-        '201':
-          description: Note created successfully
+        '200':
+          description: Note created or updated successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/note'
+        '400':
+          description: Invalid request
+        '500':
+          description: Internal server error
   /notes/{id}:
     get:
       tags:
@@ -58,33 +63,6 @@ paths:
       responses:
         '200':
           description: A single note
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/note'
-        '404':
-          description: Note not found
-    put:
-      tags:
-        - notes
-      summary: Update a specific note by ID
-      operationId: updateNoteById
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID of the note to update
-          schema:
-            type: string
-      requestBody:
-        description: The note data to update
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/note'
-      responses:
-        '200':
-          description: Note updated successfully
           content:
             application/json:
               schema:

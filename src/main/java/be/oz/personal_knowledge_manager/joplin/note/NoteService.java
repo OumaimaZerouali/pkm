@@ -1,5 +1,6 @@
 package be.oz.personal_knowledge_manager.joplin.note;
 
+import be.oz.personal_knowledge_manager.joplin.exception.JoplinException;
 import be.oz.personal_knowledge_manager.pkm.note.domain.Note;
 import be.oz.personal_knowledge_manager.pkm.note.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,14 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class JoplinService implements NoteRepository {
+public class NoteService implements NoteRepository {
     private final String joplinUrl;
     private final String joplinToken;
     private final RestTemplate restTemplate;
 
-    public JoplinService(RestTemplate restTemplate,
-                         @Value("${joplin.token}") String token,
-                         @Value("${joplin.url}") String joplinUrl) {
+    public NoteService(RestTemplate restTemplate,
+                       @Value("${joplin.token}") String token,
+                       @Value("${joplin.url}") String joplinUrl) {
         this.restTemplate = restTemplate;
         this.joplinToken = token;
         this.joplinUrl = joplinUrl;
@@ -66,7 +67,7 @@ public class JoplinService implements NoteRepository {
         var response = restTemplate.getForObject(url, JoplinNote.class);
 
         if (response == null) {
-            return null;
+            throw new JoplinException("Error getting note: No response from Joplin API");
         }
 
         return Note.builder()
@@ -93,15 +94,20 @@ public class JoplinService implements NoteRepository {
         requestBody.put("body", note.getContent());
         requestBody.put("folders", note.getFolder());
 
-        ResponseEntity<Map> responseEntity = restTemplate.exchange(
-                joplinUrl + "/notes?token=" + joplinToken,
-                HttpMethod.POST,
-                new HttpEntity<>(requestBody),
-                Map.class
-        );
+        ResponseEntity<Map> responseEntity;
+        try {
+            responseEntity = restTemplate.exchange(
+                    joplinUrl + "/notes?token=" + joplinToken,
+                    HttpMethod.POST,
+                    new HttpEntity<>(requestBody),
+                    Map.class
+            );
+        } catch (Exception e) {
+            throw new JoplinException("Failed to communicate with Joplin API", e);
+        }
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            System.err.println("Error response from Joplin: " + responseEntity.getBody());
+            throw new JoplinException("Error response from Joplin: " + responseEntity.getBody());
         }
 
         var responseBody = responseEntity.getBody();
@@ -120,7 +126,7 @@ public class JoplinService implements NoteRepository {
                     .updated(LocalDateTime.now())
                     .build();
         } else {
-            throw new RuntimeException("Error creating note: No response from Joplin API");
+            throw new JoplinException("Error creating note: No response from Joplin API");
         }
     }
 
@@ -143,7 +149,7 @@ public class JoplinService implements NoteRepository {
         );
 
         if (response.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException("Failed to update note in Joplin");
+            throw new JoplinException("Error response from Joplin: " + response.getBody());
         }
 
         var body = response.getBody();

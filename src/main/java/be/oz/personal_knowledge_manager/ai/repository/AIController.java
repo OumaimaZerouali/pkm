@@ -7,7 +7,7 @@ import be.oz.personal_knowledge_manager.model.ChatWithAIRequestDTO;
 import be.oz.personal_knowledge_manager.model.NoteDTO;
 import be.oz.personal_knowledge_manager.pkm.folder.usecase.GetFolderNameByIdUseCase;
 import be.oz.personal_knowledge_manager.pkm.note.domain.Note;
-import be.oz.personal_knowledge_manager.pkm.note.usecase.CreateNoteUseCase;
+import be.oz.personal_knowledge_manager.pkm.note.usecase.CreateOrUpdateNoteUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AIController implements AiApi {
     private final ChatModel chatModel;
-    private final CreateNoteUseCase createNoteUseCase;
+    private final CreateOrUpdateNoteUseCase createOrUpdateNoteUseCase;
     private final GetFolderNameByIdUseCase getFolderNameByIdUseCase;
 
     @Override
@@ -51,7 +51,7 @@ public class AIController implements AiApi {
                 .folder(folder.getName())
                 .build();
 
-        var savedNote = createNoteUseCase.execute(newNote);
+        var savedNote = createOrUpdateNoteUseCase.execute(newNote);
         return ResponseEntity.status(HttpStatus.CREATED).body(NoteDTO.builder()
                 .id(savedNote.getId())
                 .title(savedNote.getTitle())
