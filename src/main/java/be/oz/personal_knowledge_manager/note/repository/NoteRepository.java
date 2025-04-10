@@ -8,4 +8,6 @@ public interface NoteRepository {
     List<Note> findAllNotes();
     Note createNote(Note note);
     Note getNoteById(String id);
+    Note updateNoteById(Note note, String id);
+    void deleteNoteById(String id);
 }

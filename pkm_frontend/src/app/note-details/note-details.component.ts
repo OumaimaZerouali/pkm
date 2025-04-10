@@ -1,21 +1,21 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {MarkdownModule} from 'ngx-markdown';
 import {DatePipe, Location} from '@angular/common';
+import {MarkdownModule} from 'ngx-markdown';
 import {FoldersService, NotesService} from '../../../libs/api';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-note-details',
   templateUrl: './note-details.component.html',
-  imports: [
-    MarkdownModule,
-    DatePipe
-  ],
-  styleUrls: ['./note-details.component.scss']
+  styleUrls: ['./note-details.component.scss'],
+  standalone: true,
+  imports: [MarkdownModule, DatePipe, FormsModule],
 })
 export class NoteDetailsComponent implements OnInit {
   note: any;
   folder: any;
+  editMode = false;
 
   private noteService: NotesService = inject(NotesService);
   private folderService: FoldersService = inject(FoldersService);
@@ -25,10 +25,9 @@ export class NoteDetailsComponent implements OnInit {
   ngOnInit() {
     const noteId = this.route.snapshot.paramMap.get('id');
     if (noteId) {
-      this.noteService.getNoteById(noteId).subscribe(note => {
+      this.noteService.getNoteById(noteId).subscribe((note) => {
         this.note = note;
-
-        this.folderService.getFolderById(note.folder!).subscribe(folder => {
+        this.folderService.getFolderById(note.folder!).subscribe((folder: any) => {
           this.folder = folder;
         });
       });
@@ -38,5 +37,24 @@ export class NoteDetailsComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-}
 
+  deleteNote(): void {
+    if (confirm('Are you sure you want to delete this note?')) {
+      this.noteService.deleteNoteById(this.note.id).subscribe(() => {
+        this.goBack();
+      });
+    }
+  }
+
+  cancelEdit(): void {
+    this.editMode = false;
+    this.ngOnInit();
+  }
+
+  updateNote(): void {
+    this.noteService.updateNoteById(this.note.id, this.note).subscribe((updatedNote) => {
+      this.note = updatedNote;
+      this.editMode = false;
+    });
+  }
+}

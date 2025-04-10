@@ -1,29 +1,75 @@
-<div class="filter-container">
-  <label for="folderFilter">Filter by Folder:</label>
-  <select id="folderFilter" [(ngModel)]="selectedFolder" (change)="filterNotes()">
-    <option value="">All Folders</option>
+<div class="side-panel">
+  <div class="folder-list">
+    <div class="folder-item" (click)="filterByFolder('')">
+      All Folders
+    </div>
     @for (folder of folders; track folder) {
-      <option [value]="folder">{{ folder }}</option>
+      <div class="folder-item" (click)="filterByFolder(folder)">
+        {{ folder }}
+      </div>
     }
-  </select>
+  </div>
 </div>
 
-<div class="notes">
-  @for (note of notes; track note) {
-    <div class="note-card">
-      <div class="note-header">
-        <h3>{{ note.title }}</h3>
+<div class="main-content">
+  <div class="actions-bar">
+    <button (click)="creatingNote = !creatingNote" class="create-note-button">
+      {{ creatingNote ? 'Cancel' : 'Create New Note' }}
+    </button>
+  </div>
+
+  @if (creatingNote) {
+    <div class="create-note-form">
+      <label>Title</label>
+      <input type="text" [(ngModel)]="newNote.title" />
+
+      <label>Content</label>
+      <textarea rows="5" [(ngModel)]="newNote.content"></textarea>
+
+      <label>Author</label>
+      <input type="text" [(ngModel)]="newNote.author" />
+
+      <label>Folder</label>
+      <select [(ngModel)]="newNote.folder">
+        @for (folderId of folderNames.keys(); track folderId) {
+          <option [value]="folderId">
+            {{ folderNames.get(folderId) }}
+          </option>
+        }
+      </select>
+
+      <button (click)="createNote()" class="save-button">Save Note</button>
+    </div>
+  }
+  <div class="notes">
+    @for (note of notes; track note) {
+      <div class="note-card">
+        <div class="note-header">
+          <h3>{{ note.title }}</h3>
+        </div>
+        <div class="note-body">
+          <p><strong>Author:</strong> {{ note.author || 'N/A' }}</p>
+          <p><strong>Source:</strong> <a href="{{ note.source_url }}" target="_blank">{{ note.source_url || 'N/A' }}</a></p>
+          <p><strong>Folder:</strong> {{ getFolderName(note.folder) }}</p>
+          <p><strong>Created:</strong> {{ note.created }}</p>
+          <p><strong>Updated:</strong> {{ note.updated }}</p>
+        </div>
+        <div class="note-footer">
+          <a [routerLink]="['/notes', note.id]" class="btn btn-primary">View Full Note</a>
+        </div>
       </div>
-      <div class="note-body">
-        <p><strong>Author:</strong> {{ note.author || 'N/A'  }}</p>
-        <p><strong>Source:</strong> <a href="{{ note.source_url }}" target="_blank">{{ note.source_url || 'N/A'  }}</a></p>
-        <p><strong>Folder:</strong> {{ getFolderName(note.folder) }}</p>
-        <p><strong>Created:</strong> {{ note.created }}</p>
-        <p><strong>Updated:</strong> {{ note.updated }}</p>
-      </div>
-      <div class="note-footer">
-        <a [routerLink]="['/notes', note.id]" class="btn btn-primary">View Full Note</a>
-      </div>
+    }
+  </div>
+
+  <button class="chatbot-btn" (click)="toggleChatbotModal()">
+    Chat with AI
+  </button>
+  @if (chatbotModalOpen) {
+    <div class="chatbot-modal">
+      <app-chatbot></app-chatbot>
+      <button class="close-modal" (click)="toggleChatbotModal()">Close</button>
     </div>
   }
 </div>
+
+

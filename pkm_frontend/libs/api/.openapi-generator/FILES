@@ -1,8 +1,8 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.base.service.ts
 api.module.ts
+api/ai.service.ts
 api/api.ts
 api/folders.service.ts
 api/notes.service.ts
@@ -10,6 +10,9 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/aIRequest.ts
+model/chatWithAI200Response.ts
+model/chatWithAIRequest.ts
 model/folder.ts
 model/models.ts
 model/note.ts

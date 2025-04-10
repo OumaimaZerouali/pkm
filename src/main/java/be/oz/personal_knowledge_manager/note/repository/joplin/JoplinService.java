@@ -94,7 +94,7 @@ public class JoplinService implements NoteRepository {
         requestBody.put("folders", note.getFolder());
 
         ResponseEntity<Map> responseEntity = restTemplate.exchange(
-                joplinUrl + "?token=" + joplinToken,
+                joplinUrl + "/notes?token=" + joplinToken,
                 HttpMethod.POST,
                 new HttpEntity<>(requestBody),
                 Map.class
@@ -104,7 +104,7 @@ public class JoplinService implements NoteRepository {
             System.err.println("Error response from Joplin: " + responseEntity.getBody());
         }
 
-        Map<String, Object> responseBody = responseEntity.getBody();
+        var responseBody = responseEntity.getBody();
         if (responseBody != null) {
             var id = (String) responseBody.get("id");
             var title = (String) responseBody.get("title");
@@ -122,6 +122,47 @@ public class JoplinService implements NoteRepository {
         } else {
             throw new RuntimeException("Error creating note: No response from Joplin API");
         }
+    }
+
+    @Override
+    public Note updateNoteById(Note note, String id) {
+        var url = joplinUrl + "/notes/" + id + "?token=" + joplinToken;
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("title", note.getTitle());
+        requestBody.put("body", note.getContent());
+        requestBody.put("parent_id", note.getFolder());
+        requestBody.put("author", note.getAuthor());
+        requestBody.put("source_url", note.getSource_url());
+
+        ResponseEntity<Map> response = restTemplate.exchange(
+                url,
+                HttpMethod.PUT,
+                new HttpEntity<>(requestBody),
+                Map.class
+        );
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException("Failed to update note in Joplin");
+        }
+
+        var body = response.getBody();
+        return Note.builder()
+                .id((String) body.get("id"))
+                .title((String) body.get("title"))
+                .content((String) body.get("body"))
+                .folder((String) body.get("parent_id"))
+                .author((String) body.get("author"))
+                .source_url((String) body.get("source_url"))
+                .created(LocalDateTime.now())
+                .updated(LocalDateTime.now())
+                .build();
+    }
+
+    @Override
+    public void deleteNoteById(String id) {
+        var url = joplinUrl + "/notes/" + id + "?token=" + joplinToken + "&permanent=1";
+        restTemplate.delete(url);
     }
 }
 

@@ -3,9 +3,7 @@ package be.oz.personal_knowledge_manager.note.repository;
 import be.oz.personal_knowledge_manager.api.NotesApi;
 import be.oz.personal_knowledge_manager.model.NoteDTO;
 import be.oz.personal_knowledge_manager.note.domain.Note;
-import be.oz.personal_knowledge_manager.note.usecase.CreateNoteUseCase;
-import be.oz.personal_knowledge_manager.note.usecase.GetNoteByIdUseCase;
-import be.oz.personal_knowledge_manager.note.usecase.GetNotesUseCase;
+import be.oz.personal_knowledge_manager.note.usecase.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,10 +16,36 @@ public class NoteController implements NotesApi {
     private final GetNotesUseCase getNotesUseCase;
     private final CreateNoteUseCase createNoteUseCase;
     private final GetNoteByIdUseCase getNoteByIdUseCase;
+    private final UpdateNoteByIdUseCase updateNoteByIdUseCase;
+    private final DeleteNoteByIdUseCase deleteNoteByIdUseCase;
 
     @Override
     public ResponseEntity<NoteDTO> updateNoteById(String id, NoteDTO noteDTO) {
-        return null;
+        var note = updateNoteByIdUseCase.execute(Note.builder()
+                .id(noteDTO.getId())
+                .title(noteDTO.getTitle())
+                .folder(noteDTO.getFolder())
+                .created(noteDTO.getCreated())
+                .updated(noteDTO.getUpdated())
+                .author(noteDTO.getAuthor())
+                .content(noteDTO.getContent())
+                .content_html(noteDTO.getContentHtml())
+                .source_url(noteDTO.getSourceUrl())
+                .build(), id);
+
+        var responseNoteDTO = new NoteDTO(
+                note.getId(),
+                note.getTitle(),
+                note.getFolder(),
+                note.getContent_html(),
+                note.getSource_url(),
+                note.getAuthor(),
+                note.getContent(),
+                note.getCreated(),
+                note.getUpdated()
+        );
+
+        return ResponseEntity.ok(responseNoteDTO);
     }
 
     @Override
@@ -55,7 +79,8 @@ public class NoteController implements NotesApi {
 
     @Override
     public ResponseEntity<Void> deleteNoteById(String id) {
-        return null;
+        deleteNoteByIdUseCase.execute(id);
+        return ResponseEntity.ok().build();
     }
 
     @Override

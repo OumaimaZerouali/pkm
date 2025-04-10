@@ -2,13 +2,15 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {RouterLink} from '@angular/router';
 import {FoldersService, NotesService} from '../../../libs/api';
+import {ChatbotComponent} from '../chatbot/chatbot.component';
 
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
   imports: [
     FormsModule,
-    RouterLink
+    RouterLink,
+    ChatbotComponent
   ],
   styleUrls: ['./note.component.scss']
 })
@@ -18,6 +20,15 @@ export class NoteComponent implements OnInit {
   folderNames: Map<string, string> = new Map();
   folders: string[] = [];
   selectedFolder: string = '';
+  creatingNote = false;
+  chatbotModalOpen = false;
+
+  newNote = {
+    title: '',
+    content: '',
+    author: '',
+    folder: ''
+  };
 
   private noteService: NotesService = inject(NotesService);
   private folderService: FoldersService = inject(FoldersService);
@@ -46,13 +57,15 @@ export class NoteComponent implements OnInit {
     folderIds.forEach(folderId => {
       this.folderService.getFolderById(folderId).subscribe(folder => {
         this.folderNames.set(folderId, folder.name);
-        this.updateFoldersDropdown();
+        this.updateFolders();
       });
     });
   }
 
-  updateFoldersDropdown() {
-    this.folders = Array.from(this.folderNames.values());
+  updateFolders() {
+    this.folders = Array.from(this.folderNames.values()).sort((a, b) =>
+      a.localeCompare(b)
+    );
   }
 
   getFolderName(folderId: string): string {
@@ -65,5 +78,48 @@ export class NoteComponent implements OnInit {
     } else {
       this.notes = [...this.originalNotes];
     }
+  }
+
+  filterByFolder(folder: string) {
+    this.selectedFolder = folder;
+    this.filterNotes();
+  }
+
+  createNote() {
+    const id = this.generateHexId();
+
+    const payload = {
+      id,
+      ...this.newNote,
+      created: new Date().toISOString(),
+      updated: new Date().toISOString()
+    };
+
+    this.noteService.createNote(payload).subscribe(() => {
+      this.creatingNote = false;
+      this.resetNewNote();
+      this.loadNotes();
+    });
+  }
+
+  resetNewNote() {
+    this.newNote = {
+      title: '',
+      content: '',
+      author: '',
+      folder: ''
+    };
+  }
+
+  toggleChatbotModal() {
+    this.chatbotModalOpen = !this.chatbotModalOpen;
+  }
+
+  private generateHexId(): string {
+    const array = new Uint8Array(16);
+    crypto.getRandomValues(array);
+    return Array.from(array)
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
   }
 }

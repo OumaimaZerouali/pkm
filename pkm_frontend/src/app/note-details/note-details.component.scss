@@ -67,3 +67,99 @@
   padding: 2px 4px;
   border-radius: 3px;
 }
+
+.note-actions {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button,
+.delete-button {
+  background-color: #272822;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: #444;
+}
+
+.delete-button {
+  background-color: #e53935;
+}
+
+.delete-button:hover {
+  background-color: #c62828;
+}
+
+.edit-form {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #f6f8fa;
+  border-left: 4px solid #272822;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.edit-form label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #272822;
+}
+
+.edit-form input,
+.edit-form textarea {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  resize: vertical;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus {
+  outline: none;
+  border-color: #272822;
+  box-shadow: 0 0 0 2px rgba(39, 40, 34, 0.1);
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-buttons button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-buttons button:first-child {
+  background-color: #272822;
+  color: white;
+}
+
+.form-buttons button:first-child:hover {
+  background-color: #444;
+}
+
+.form-buttons button:last-child {
+  background-color: #ccc;
+  color: #272822;
+}
+
+.form-buttons button:last-child:hover {
+  background-color: #bbb;
+}
+

@@ -2,19 +2,46 @@
   <div class="note-details">
     <button class="back-button" (click)="goBack()">← Back to Overview</button>
 
-    <h2 class="note-title">{{ note.title }}</h2>
-    <div class="note-meta">
-      <p><strong>Author:</strong> {{ note.author || 'Unknown' }}</p>
-      <p><strong>Source:</strong>
-        <a [href]="note.source_url" target="_blank">{{ note.source_url || 'N/A' }}</a>
-      </p>
-      <p><strong>Folder:</strong> {{ folder?.name }}</p>
-      <p><strong>Created:</strong> {{ note.created | date:'medium' }}</p>
-      <p><strong>Updated:</strong> {{ note.updated | date:'medium' }}</p>
-    </div>
+    @if (!editMode) {
+      <h2 class="note-title">{{ note.title }}</h2>
 
-    <div class="note-content">
-      <markdown [data]="note.content"></markdown>
-    </div>
+      <div class="note-actions">
+        <button class="edit-button" (click)="editMode = true">Edit</button>
+        <button class="delete-button" (click)="deleteNote()">Delete</button>
+      </div>
+
+      <div class="note-meta">
+        <p><strong>Author:</strong> {{ note.author || 'Unknown' }}</p>
+        <p><strong>Source:</strong>
+          <a [href]="note.source_url" target="_blank">{{ note.source_url || 'N/A' }}</a>
+        </p>
+        <p><strong>Folder:</strong> {{ folder?.name }}</p>
+        <p><strong>Created:</strong> {{ note.created | date:'medium' }}</p>
+        <p><strong>Updated:</strong> {{ note.updated | date:'medium' }}</p>
+      </div>
+
+      <div class="note-content">
+        <markdown [data]="note.content"></markdown>
+      </div>
+    } @else {
+      <div class="edit-form">
+        <label>Title</label>
+        <input type="text" [(ngModel)]="note.title" />
+
+        <label>Content</label>
+        <textarea rows="10" [(ngModel)]="note.content"></textarea>
+
+        <label>Author</label>
+        <input type="text" [(ngModel)]="note.author" />
+
+        <label>Source URL</label>
+        <input type="text" [(ngModel)]="note.source_url" />
+
+        <div class="form-buttons">
+          <button (click)="updateNote()">Save</button>
+          <button (click)="cancelEdit()">Cancel</button>
+        </div>
+      </div>
+    }
   </div>
 }

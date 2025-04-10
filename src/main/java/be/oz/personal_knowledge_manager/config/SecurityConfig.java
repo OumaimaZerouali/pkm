@@ -26,10 +26,12 @@ public class SecurityConfig {
 
         http.securityMatcher("/api/**")
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(HttpMethod.POST, "/api/notes").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/notes").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/notes/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/folders/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/notes").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/notes").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/notes/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/folders/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/prompt/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/prompt/*").permitAll()
                         .anyRequest().authenticated()
                 );
 
