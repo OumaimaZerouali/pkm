@@ -1,13 +1,13 @@
 package be.oz.personal_knowledge_manager.ai.repository;
 
 import be.oz.personal_knowledge_manager.api.AiApi;
-import be.oz.personal_knowledge_manager.folder.usecase.GetFolderNameByIdUseCase;
 import be.oz.personal_knowledge_manager.model.AIRequestDTO;
 import be.oz.personal_knowledge_manager.model.ChatWithAI200ResponseDTO;
 import be.oz.personal_knowledge_manager.model.ChatWithAIRequestDTO;
 import be.oz.personal_knowledge_manager.model.NoteDTO;
-import be.oz.personal_knowledge_manager.note.domain.Note;
-import be.oz.personal_knowledge_manager.note.usecase.CreateNoteUseCase;
+import be.oz.personal_knowledge_manager.pkm.folder.usecase.GetFolderNameByIdUseCase;
+import be.oz.personal_knowledge_manager.pkm.note.domain.Note;
+import be.oz.personal_knowledge_manager.pkm.note.usecase.CreateNoteUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.http.HttpStatus;
