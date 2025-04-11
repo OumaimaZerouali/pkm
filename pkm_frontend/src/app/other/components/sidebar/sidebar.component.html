@@ -1,0 +1,16 @@
+<div class="side-panel">
+  <div class="folder-list">
+    <div class="folder-item" (click)="onFolderClick('')">
+      All Folders
+    </div>
+
+    @for (folder of folders; track folder) {
+      <div class="folder-item" (click)="onFolderClick(folder)">
+        {{ folder }}
+      </div>
+    }
+  </div>
+</div>
+
+
+

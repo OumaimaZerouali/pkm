@@ -1,20 +1,13 @@
-<div class="side-panel">
-  <div class="folder-list">
-    <div class="folder-item" (click)="filterByFolder('')">
-      All Folders
-    </div>
-    @for (folder of folders; track folder) {
-      <div class="folder-item" (click)="filterByFolder(folder)">
-        {{ folder }}
-      </div>
-    }
-  </div>
-</div>
+<app-sidebar [selectedFolder]="selectedFolder" (folderSelected)="onFolderSelected($event)"></app-sidebar>
 
 <div class="main-content">
   <div class="actions-bar">
     <button (click)="creatingNote = !creatingNote" class="create-note-button">
       {{ creatingNote ? 'Cancel' : 'Create New Note' }}
+    </button>
+
+    <button  (click)="goToChatbotPage()" class="create-note-button">
+      Chat with AI
     </button>
   </div>
 
@@ -41,6 +34,7 @@
       <button (click)="createNote()" class="save-button">Save Note</button>
     </div>
   }
+
   <div class="notes">
     @for (note of notes; track note) {
       <div class="note-card">
@@ -60,16 +54,4 @@
       </div>
     }
   </div>
-
-  <button class="chatbot-btn" (click)="toggleChatbotModal()">
-    Chat with AI
-  </button>
-  @if (chatbotModalOpen) {
-    <div class="chatbot-floating-window">
-      <app-chatbot></app-chatbot>
-      <button class="close-floating" (click)="toggleChatbotModal()">✕</button>
-    </div>
-  }
 </div>
-
-

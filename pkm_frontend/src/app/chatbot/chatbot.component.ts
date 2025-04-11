@@ -1,6 +1,6 @@
 import {AfterViewChecked, Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {MarkdownPipe} from '../other/markdown.pipe';
+import {MarkdownPipe} from '../other/pipes/markdown.pipe';
 import {catchError, map, Observable, of} from 'rxjs';
 import {
   AiService,

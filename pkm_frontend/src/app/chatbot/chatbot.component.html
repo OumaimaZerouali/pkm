@@ -1,20 +1,22 @@
-<div class="chatbot-inner">
+<div class="chatbot-container">
   <div class="chatbot-messages" #chatMessages>
-    @for (message of messages; track message){
-        <div class="chat-message">
-          <div class="user-message"><strong>You:</strong> {{ message.user }}</div>
-          <div class="ai-message">
-            <strong>AI:</strong>
-            <div [innerHTML]="message.ai | markdown"></div>
-          </div>
+    @for (message of messages; track message) {
+      <div class="chat-message">
+        <div class="user-message">
+          <strong>You:</strong> {{ message.user }}
         </div>
+        <div class="ai-message">
+          <strong>AI:</strong>
+          <div [innerHTML]="message.ai | markdown"></div>
+        </div>
+      </div>
     }
   </div>
 
   <div class="model-selector">
-    <label for="model">Select AI Model: </label>
+    <label for="model">Select AI Model:</label>
     <select [(ngModel)]="requestedModel" id="model">
-      @for (model of availableModels; track model) {
+      @for (model of availableModels; track model){
         <option [value]="model">{{ model }}</option>
       }
     </select>

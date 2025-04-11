@@ -1,8 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {FoldersService, NotesService} from '../../../libs/api';
-import {ChatbotComponent} from '../chatbot/chatbot.component';
+import {SidebarComponent} from '../other/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-note',
@@ -10,7 +10,7 @@ import {ChatbotComponent} from '../chatbot/chatbot.component';
   imports: [
     FormsModule,
     RouterLink,
-    ChatbotComponent
+    SidebarComponent
   ],
   styleUrls: ['./note.component.scss']
 })
@@ -21,7 +21,6 @@ export class NoteComponent implements OnInit {
   folders: string[] = [];
   selectedFolder: string = '';
   creatingNote = false;
-  chatbotModalOpen = false;
 
   newNote = {
     title: '',
@@ -32,6 +31,7 @@ export class NoteComponent implements OnInit {
 
   private noteService: NotesService = inject(NotesService);
   private folderService: FoldersService = inject(FoldersService);
+  private router: Router = inject(Router);
 
   ngOnInit() {
     this.loadNotes();
@@ -72,7 +72,7 @@ export class NoteComponent implements OnInit {
     return this.folderNames.get(folderId) || 'Unknown Folder';
   }
 
-  filterNotes() {
+  filterNotesByFolder() {
     if (this.selectedFolder) {
       this.notes = this.originalNotes.filter(note => this.getFolderName(note.folder) === this.selectedFolder);
     } else {
@@ -80,9 +80,9 @@ export class NoteComponent implements OnInit {
     }
   }
 
-  filterByFolder(folder: string) {
+  onFolderSelected(folder: string): void {
     this.selectedFolder = folder;
-    this.filterNotes();
+    this.filterNotesByFolder();
   }
 
   createNote() {
@@ -111,8 +111,8 @@ export class NoteComponent implements OnInit {
     };
   }
 
-  toggleChatbotModal() {
-    this.chatbotModalOpen = !this.chatbotModalOpen;
+  goToChatbotPage() {
+    this.router.navigate(['/chat']);
   }
 
   private generateHexId(): string {
