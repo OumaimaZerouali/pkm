@@ -10,11 +10,12 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
-model/aIRequest.ts
+model/chatRequest.ts
 model/chatWithAI200Response.ts
-model/chatWithAIRequest.ts
 model/folder.ts
+model/model.ts
 model/models.ts
 model/note.ts
+model/noteRequest.ts
 param.ts
 variables.ts

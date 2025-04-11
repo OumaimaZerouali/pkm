@@ -95,7 +95,7 @@ export class NoteComponent implements OnInit {
       updated: new Date().toISOString()
     };
 
-    this.noteService.createNote(payload).subscribe(() => {
+    this.noteService.createOrUpdateNote(payload).subscribe(() => {
       this.creatingNote = false;
       this.resetNewNote();
       this.loadNotes();

@@ -26,14 +26,22 @@ public class SecurityConfig {
 
         http.securityMatcher("/**")
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(HttpMethod.PUT, "/notes").permitAll()
+                        // Notes
                         .requestMatchers(HttpMethod.GET, "/notes").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/notes").permitAll()
                         .requestMatchers(HttpMethod.GET, "/notes/*").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/notes/*").permitAll()
+
+                        // Folders
+                        .requestMatchers(HttpMethod.GET, "/folders").permitAll()
                         .requestMatchers(HttpMethod.GET, "/folders/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/prompt/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/prompt/*").permitAll()
-                        .anyRequest().authenticated()
+
+                        // AI Endpoints
+                        .requestMatchers(HttpMethod.POST, "/ai/chat").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/ai/notes").permitAll()
+                        .requestMatchers("/prompt/**").permitAll()
+
+                        .anyRequest().permitAll()
                 );
 
         return http.build();

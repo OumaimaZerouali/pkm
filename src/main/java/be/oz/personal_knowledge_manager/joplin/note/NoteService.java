@@ -14,10 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class NoteService implements NoteRepository {
@@ -62,15 +59,19 @@ public class NoteService implements NoteRepository {
     }
 
     @Override
-    public Note getNoteById(String id) {
+    public Optional<Note> getNoteById(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            return Optional.empty();
+        }
+
         var url = joplinUrl + "/notes/" + id + "?token=" + joplinToken + "&fields=id,parent_id,title,body,author,source_url";
         var response = restTemplate.getForObject(url, JoplinNote.class);
 
         if (response == null) {
-            throw new JoplinException("Error getting note: No response from Joplin API");
+            return Optional.empty();
         }
 
-        return Note.builder()
+        Note note = Note.builder()
                 .id(response.id())
                 .title(response.title())
                 .content(response.body())
@@ -85,8 +86,9 @@ public class NoteService implements NoteRepository {
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime())
                 .build();
-    }
 
+        return Optional.of(note);
+    }
     @Override
     public Note createNote(Note note) {
         Map<String, Object> requestBody = new HashMap<>();

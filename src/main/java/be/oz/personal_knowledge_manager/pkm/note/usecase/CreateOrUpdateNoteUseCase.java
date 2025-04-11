@@ -13,7 +13,7 @@ public class CreateOrUpdateNoteUseCase {
     public Note execute(Note note) {
         var existingNote = repository.getNoteById(note.getId());
 
-        if (existingNote != null) {
+        if (existingNote.isPresent()) {
             return repository.updateNoteById(note, note.getId());
         }
 

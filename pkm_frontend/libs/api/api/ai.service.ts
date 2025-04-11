@@ -14,13 +14,13 @@ import {HttpClient, HttpContext, HttpEvent, HttpResponse} from '@angular/common/
 import {Observable} from 'rxjs';
 
 // @ts-ignore
-import {AIRequest} from '../model/aIRequest';
+import {ChatRequest} from '../model/chatRequest';
 // @ts-ignore
 import {ChatWithAI200Response} from '../model/chatWithAI200Response';
 // @ts-ignore
-import {ChatWithAIRequest} from '../model/chatWithAIRequest';
-// @ts-ignore
 import {Note} from '../model/note';
+// @ts-ignore
+import {NoteRequest} from '../model/noteRequest';
 
 // @ts-ignore
 import {BASE_PATH, COLLECTION_FORMATS} from '../variables';
@@ -39,14 +39,14 @@ export class AiService extends BaseService {
 
     /**
      * Chat with the assistant
-     * @param chatWithAIRequest User\&#39;s message to the assistant
+     * @param chatRequest User\&#39;s message to the assistant
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public chatWithAI(chatWithAIRequest?: ChatWithAIRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ChatWithAI200Response>;
-    public chatWithAI(chatWithAIRequest?: ChatWithAIRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ChatWithAI200Response>>;
-    public chatWithAI(chatWithAIRequest?: ChatWithAIRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ChatWithAI200Response>>;
-    public chatWithAI(chatWithAIRequest?: ChatWithAIRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public chatWithAI(chatRequest?: ChatRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ChatWithAI200Response>;
+    public chatWithAI(chatRequest?: ChatRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ChatWithAI200Response>>;
+    public chatWithAI(chatRequest?: ChatRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ChatWithAI200Response>>;
+    public chatWithAI(chatRequest?: ChatRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -86,7 +86,7 @@ export class AiService extends BaseService {
         return this.httpClient.request<ChatWithAI200Response>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: chatWithAIRequest,
+                body: chatRequest,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -99,14 +99,14 @@ export class AiService extends BaseService {
 
     /**
      * Generate a note based on AI\&#39;s response
-     * @param aIRequest User\&#39;s message to the assistant with folder info
+     * @param noteRequest User\&#39;s message to the assistant with folder info
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createNoteFromAI(aIRequest?: AIRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Note>;
-    public createNoteFromAI(aIRequest?: AIRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Note>>;
-    public createNoteFromAI(aIRequest?: AIRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Note>>;
-    public createNoteFromAI(aIRequest?: AIRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public createNoteFromAI(noteRequest?: NoteRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Note>;
+    public createNoteFromAI(noteRequest?: NoteRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Note>>;
+    public createNoteFromAI(noteRequest?: NoteRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Note>>;
+    public createNoteFromAI(noteRequest?: NoteRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -146,7 +146,7 @@ export class AiService extends BaseService {
         return this.httpClient.request<Note>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: aIRequest,
+                body: noteRequest,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -1,8 +1,16 @@
 import {AfterViewChecked, Component, ElementRef, inject, ViewChild} from '@angular/core';
-import {AIRequest, AiService, ChatWithAI200Response, ChatWithAIRequest, FoldersService, Note} from '../../../libs/api';
 import {FormsModule} from '@angular/forms';
 import {MarkdownPipe} from '../other/markdown.pipe';
 import {catchError, map, Observable, of} from 'rxjs';
+import {
+  AiService,
+  ChatRequest,
+  ChatWithAI200Response,
+  FoldersService,
+  Model,
+  Note,
+  NoteRequest
+} from '../../../libs/api';
 
 @Component({
   selector: 'app-chatbot',
@@ -10,13 +18,16 @@ import {catchError, map, Observable, of} from 'rxjs';
   imports: [FormsModule, MarkdownPipe],
   styleUrls: ['./chatbot.component.scss']
 })
-export class ChatbotComponent implements AfterViewChecked{
+export class ChatbotComponent implements AfterViewChecked {
   messages: { user: string, ai: string }[] = [];
   currentMessage = '';
+  requestedModel: Model = Model.Deepseek;
   isLoading = false;
   folderId: string | null = null;
 
-  private ai: AiService = inject(AiService);
+  availableModels: Model[] = [Model.Deepseek, Model.Gemma, Model.Llama3, Model.Mistral, Model.Codellama];
+
+  private aiService: AiService = inject(AiService);
   private folderService: FoldersService = inject(FoldersService);
 
   @ViewChild('chatMessages') private chatMessages!: ElementRef;
@@ -29,12 +40,16 @@ export class ChatbotComponent implements AfterViewChecked{
     if (!this.currentMessage.trim()) return;
 
     const userMessage = this.currentMessage;
+    const requestedModel = this.requestedModel;
     this.currentMessage = '';
     this.isLoading = true;
 
-    const requestPayload: ChatWithAIRequest = { message: userMessage };
+    const requestPayload: ChatRequest = {
+      message: userMessage,
+      model: requestedModel
+    };
 
-    this.ai.chatWithAI(requestPayload).subscribe({
+    this.aiService.chatWithAI(requestPayload).subscribe({
       next: (response: ChatWithAI200Response) => {
         this.messages.push({ user: userMessage, ai: response.response ?? 'No response from AI' });
 
@@ -97,13 +112,14 @@ export class ChatbotComponent implements AfterViewChecked{
   }
 
   createNoteFromAI(aiResponse: string) {
-    const aiRequestPayload: AIRequest = {
+    const aiRequestPayload: NoteRequest = {
       message: aiResponse,
       folder: this.folderId || "",
-      createNoteIfPossible: true
+      createNoteIfPossible: true,
+      model: this.requestedModel
     };
 
-    this.ai.createNoteFromAI(aiRequestPayload).subscribe({
+    this.aiService.createNoteFromAI(aiRequestPayload).subscribe({
       next: (noteResponse: Note) => {
         console.log('Note created successfully:', noteResponse);
       },

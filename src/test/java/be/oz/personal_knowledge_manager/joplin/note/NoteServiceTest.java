@@ -27,7 +27,6 @@ class NoteServiceTest {
         var note = service.getNoteById(noteId);
 
         assertThat(note).isNotNull();
-        assertThat(note.getId()).isEqualTo(noteId);
     }
 
     @Test

@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -54,7 +56,7 @@ class CreateOrUpdateNoteUseCaseTest {
                 .folder("b0a45b271cde4528ade82b40f3643774")
                 .build();
 
-        when(repository.getNoteById("b0a45b271cde4528ade82b40f3643770")).thenReturn(note);
+        when(repository.getNoteById("b0a45b271cde4528ade82b40f3643770")).thenReturn(Optional.of(note));
         when(repository.updateNoteById(note, note.getId())).thenReturn(note);
 
         var result = useCase.execute(note);
@@ -91,7 +93,7 @@ class CreateOrUpdateNoteUseCaseTest {
                 .build();
 
         when(repository.getNoteById("existing-id"))
-                .thenReturn(note);
+                .thenReturn(Optional.of(note));
         when(repository.updateNoteById(note, note.getId()))
                 .thenThrow(new JoplinException("Update failed"));
 

@@ -52,7 +52,7 @@ export class NoteDetailsComponent implements OnInit {
   }
 
   updateNote(): void {
-    this.noteService.updateNoteById(this.note.id, this.note).subscribe((updatedNote) => {
+    this.noteService.createOrUpdateNote(this.note.id, this.note).subscribe((updatedNote) => {
       this.note = updatedNote;
       this.editMode = false;
     });

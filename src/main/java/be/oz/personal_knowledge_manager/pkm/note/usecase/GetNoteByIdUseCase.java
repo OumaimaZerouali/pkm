@@ -11,6 +11,6 @@ public class GetNoteByIdUseCase {
     private final NoteRepository repository;
 
     public Note execute(String id) {
-        return repository.getNoteById(id);
+        return repository.getNoteById(id).orElse(null);
     }
 }

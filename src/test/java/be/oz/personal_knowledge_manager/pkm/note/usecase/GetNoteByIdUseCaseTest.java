@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
@@ -34,7 +36,7 @@ class GetNoteByIdUseCaseTest {
                 .folder("7682df50eb1b4faab07c68a095fceb26")
                 .build();
 
-        when(repository.getNoteById(id)).thenReturn(expectedNote);
+        when(repository.getNoteById(id)).thenReturn(Optional.of(expectedNote));
 
         var result = useCase.execute(id);
         assertThat(result)

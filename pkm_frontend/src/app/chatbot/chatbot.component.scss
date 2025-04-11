@@ -9,7 +9,6 @@
 .chatbot-messages {
   flex-grow: 1;
   padding-right: 5px;
-  padding-right: 5px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -74,4 +73,13 @@
   font-size: 13px;
   text-align: center;
   color: #888;
+}
+
+.model-selector {
+  margin-bottom: 10px;
+}
+
+select {
+  padding: 5px;
+  font-size: 14px;
 }
