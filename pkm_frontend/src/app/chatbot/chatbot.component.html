@@ -1,4 +1,8 @@
 <div class="chatbot-container">
+  <div class="back-button-container">
+    <button (click)="goBack()" class="back-button">←</button>
+  </div>
+
   <div class="chatbot-messages" #chatMessages>
     @for (message of messages; track message) {
       <div class="chat-message">
@@ -13,26 +17,26 @@
     }
   </div>
 
-  <div class="model-selector">
-    <label for="model">Select AI Model:</label>
-    <select [(ngModel)]="requestedModel" id="model">
-      @for (model of availableModels; track model){
-        <option [value]="model">{{ model }}</option>
-      }
-    </select>
-  </div>
-
   <div class="chat-input">
     <input [(ngModel)]="currentMessage"
            (keyup.enter)="sendMessage()"
            [placeholder]="'Type your message...'"
            [disabled]="isLoading" />
     <button (click)="sendMessage()" [disabled]="isLoading">Send</button>
+
+    <button class="model-selector-button" (click)="toggleModelSelector()">
+      Select AI Model
+    </button>
   </div>
 
-  @if (isLoading) {
-    <div class="loading-indicator">
-      <p>AI is typing...</p>
+  @if (isModelSelectorVisible) {
+    <div class="model-selector">
+      <label for="model">Select AI Model:</label>
+      <select [(ngModel)]="requestedModel" id="model">
+        @for (model of availableModels; track model) {
+          <option [value]="model">{{ model }}</option>
+        }
+      </select>
     </div>
   }
 </div>

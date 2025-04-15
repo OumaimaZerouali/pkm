@@ -11,6 +11,7 @@ import {
   Note,
   NoteRequest
 } from '../../../libs/api';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-chatbot',
@@ -24,9 +25,11 @@ export class ChatbotComponent implements AfterViewChecked {
   requestedModel: Model = Model.Deepseek;
   isLoading = false;
   folderId: string | null = null;
+  isModelSelectorVisible = false;
 
   availableModels: Model[] = [Model.Deepseek, Model.Gemma, Model.Llama3, Model.Mistral, Model.Codellama];
 
+  private router: Router = inject(Router);
   private aiService: AiService = inject(AiService);
   private folderService: FoldersService = inject(FoldersService);
 
@@ -151,5 +154,13 @@ export class ChatbotComponent implements AfterViewChecked {
     try {
       this.chatMessages.nativeElement.scrollTop = this.chatMessages.nativeElement.scrollHeight;
     } catch (err) { }
+  }
+
+  toggleModelSelector() {
+    this.isModelSelectorVisible = !this.isModelSelectorVisible;
+  }
+
+  goBack() {
+    this.router.navigate(['/notes']);
   }
 }

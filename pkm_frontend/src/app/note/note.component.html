@@ -1,57 +1,72 @@
-<app-sidebar [selectedFolder]="selectedFolder" (folderSelected)="onFolderSelected($event)"></app-sidebar>
+<div class="layout">
+  <app-sidebar
+    [selectedFolder]="selectedFolder"
+    (folderSelected)="onFolderSelected($event)"
+  ></app-sidebar>
 
-<div class="main-content">
-  <div class="actions-bar">
-    <button (click)="creatingNote = !creatingNote" class="create-note-button">
-      {{ creatingNote ? 'Cancel' : 'Create New Note' }}
-    </button>
-
-    <button  (click)="goToChatbotPage()" class="create-note-button">
-      Chat with AI
-    </button>
-  </div>
-
-  @if (creatingNote) {
-    <div class="create-note-form">
-      <label>Title</label>
-      <input type="text" [(ngModel)]="newNote.title" />
-
-      <label>Content</label>
-      <textarea rows="5" [(ngModel)]="newNote.content"></textarea>
-
-      <label>Author</label>
-      <input type="text" [(ngModel)]="newNote.author" />
-
-      <label>Folder</label>
-      <select [(ngModel)]="newNote.folder">
-        @for (folderId of folderNames.keys(); track folderId) {
-          <option [value]="folderId">
-            {{ folderNames.get(folderId) }}
-          </option>
-        }
-      </select>
-
-      <button (click)="createNote()" class="save-button">Save Note</button>
+  <div class="main-content">
+    <div class="header-bar">
+      <h2>Notes</h2>
+      <div class="actions">
+        <button (click)="creatingNote = !creatingNote">
+          {{ creatingNote ? 'Cancel' : 'New Note' }}
+        </button>
+        <button (click)="goToChatbotPage()">Chat</button>
+      </div>
     </div>
-  }
 
-  <div class="notes">
-    @for (note of notes; track note) {
-      <div class="note-card">
-        <div class="note-header">
-          <h3>{{ note.title }}</h3>
-        </div>
-        <div class="note-body">
-          <p><strong>Author:</strong> {{ note.author || 'N/A' }}</p>
-          <p><strong>Source:</strong> <a href="{{ note.source_url }}" target="_blank">{{ note.source_url || 'N/A' }}</a></p>
-          <p><strong>Folder:</strong> {{ getFolderName(note.folder) }}</p>
-          <p><strong>Created:</strong> {{ note.created }}</p>
-          <p><strong>Updated:</strong> {{ note.updated }}</p>
-        </div>
-        <div class="note-footer">
-          <a [routerLink]="['/notes', note.id]" class="btn btn-primary">View Full Note</a>
-        </div>
+    @if (creatingNote) {
+      <div class="form-card">
+        <h3>Create New Note</h3>
+        <label>Title</label>
+        <input type="text" [(ngModel)]="newNote.title" />
+
+        <label>Content</label>
+        <textarea rows="5" [(ngModel)]="newNote.content"></textarea>
+
+        <label>Author</label>
+        <input type="text" [(ngModel)]="newNote.author" />
+
+        <label>Folder</label>
+        <select [(ngModel)]="newNote.folder">
+          @for (folderId of folderNames.keys(); track folderId) {
+            <option [value]="folderId">
+              {{ folderNames.get(folderId) }}
+            </option>
+          }
+        </select>
+
+        <button (click)="createNote()">Save</button>
       </div>
     }
+
+    <div class="note-table-wrapper">
+      <table class="note-table">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Folder</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (note of notes; track note.id) {
+            <tr>
+              <td>{{ note.title }}</td>
+              <td>{{ note.author || 'N/A' }}</td>
+              <td>{{ getFolderName(note.folder) }}</td>
+              <td>{{ note.created | date: 'dd-mm-yyyy' }}</td>
+              <td>{{ note.updated | date: 'dd-mm-yyyy' }}</td>
+              <td>
+                <a [routerLink]="['/notes', note.id]" class="btn-view">View</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

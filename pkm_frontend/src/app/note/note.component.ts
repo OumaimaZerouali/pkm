@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
 import {FoldersService, NotesService} from '../../../libs/api';
 import {SidebarComponent} from '../other/components/sidebar/sidebar.component';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-note',
@@ -10,7 +11,8 @@ import {SidebarComponent} from '../other/components/sidebar/sidebar.component';
   imports: [
     FormsModule,
     RouterLink,
-    SidebarComponent
+    SidebarComponent,
+    DatePipe
   ],
   styleUrls: ['./note.component.scss']
 })
