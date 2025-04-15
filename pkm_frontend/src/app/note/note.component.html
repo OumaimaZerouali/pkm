@@ -8,36 +8,53 @@
     <div class="header-bar">
       <h2>Notes</h2>
       <div class="actions">
-        <button (click)="creatingNote = !creatingNote">
-          {{ creatingNote ? 'Cancel' : 'New Note' }}
+        <button (click)="openNoteModal()">
+          New Note
         </button>
+        <button (click)="openFolderModal()">
+          New Folder
+        </button>
+
         <button (click)="goToChatbotPage()">Chat</button>
       </div>
     </div>
 
     @if (creatingNote) {
-      <div class="form-card">
-        <h3>Create New Note</h3>
-        <label>Title</label>
-        <input type="text" [(ngModel)]="newNote.title" />
+      <app-modal (closed)="closeNoteModal()">
+        <div class="form-card">
+          <h3>Create New Note</h3>
+          <label>Title</label>
+          <input type="text" [(ngModel)]="newNote.title" />
 
-        <label>Content</label>
-        <textarea rows="5" [(ngModel)]="newNote.content"></textarea>
+          <label>Content</label>
+          <textarea rows="5" [(ngModel)]="newNote.content"></textarea>
 
-        <label>Author</label>
-        <input type="text" [(ngModel)]="newNote.author" />
+          <label>Author</label>
+          <input type="text" [(ngModel)]="newNote.author" />
 
-        <label>Folder</label>
-        <select [(ngModel)]="newNote.folder">
-          @for (folderId of folderNames.keys(); track folderId) {
-            <option [value]="folderId">
-              {{ folderNames.get(folderId) }}
-            </option>
-          }
-        </select>
+          <label>Folder</label>
+          <select [(ngModel)]="newNote.folder">
+            @for (folderId of folderNames.keys(); track folderId) {
+              <option [value]="folderId">
+                {{ folderNames.get(folderId) }}
+              </option>
+            }
+          </select>
 
-        <button (click)="createNote()">Save</button>
-      </div>
+          <button (click)="createNote()">Save</button>
+        </div>
+      </app-modal>
+    }
+
+    @if (creatingFolder) {
+      <app-modal (closed)="closeFolderModal()">
+        <div class="form-card">
+          <h3>Create New Folder</h3>
+          <label>Name</label>
+          <input type="text" [(ngModel)]="newFolderName" />
+          <button (click)="createFolder()">Create</button>
+        </div>
+      </app-modal>
     }
 
     <div class="note-table-wrapper">
@@ -58,8 +75,8 @@
               <td>{{ note.title }}</td>
               <td>{{ note.author || 'N/A' }}</td>
               <td>{{ getFolderName(note.folder) }}</td>
-              <td>{{ note.created | date: 'dd-mm-yyyy' }}</td>
-              <td>{{ note.updated | date: 'dd-mm-yyyy' }}</td>
+              <td>{{ note.created | date:'medium' }}</td>
+              <td>{{ note.updated | date:'medium' }}</td>
               <td>
                 <a [routerLink]="['/notes', note.id]" class="btn-view">View</a>
               </td>

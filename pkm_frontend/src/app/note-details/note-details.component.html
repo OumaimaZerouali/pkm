@@ -8,7 +8,16 @@
       <div class="note-actions">
         <button class="edit-button" (click)="editMode = true">Edit</button>
         <button class="delete-button" (click)="deleteNote()">Delete</button>
+        <button class="help-button" (click)="markdownDialog.showModal()">Help</button>
       </div>
+
+      <dialog #markdownDialog class="markdown-modal">
+        <app-markdown-guide></app-markdown-guide>
+        <form method="dialog">
+          <button class="edit-button">Close</button>
+        </form>
+      </dialog>
+
 
       <div class="note-meta">
         <p><strong>Author:</strong> {{ note.author || 'Unknown' }}</p>

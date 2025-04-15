@@ -1,4 +1,4 @@
-import {ApplicationConfig, provideZoneChangeDetection, SecurityContext} from '@angular/core';
+import {ApplicationConfig, LOCALE_ID, provideZoneChangeDetection, SecurityContext} from '@angular/core';
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
@@ -6,6 +6,10 @@ import {provideClientHydration} from '@angular/platform-browser';
 import {HttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideMarkdown} from 'ngx-markdown';
 import {Configuration, ConfigurationParameters} from '../../libs/api';
+import {registerLocaleData} from '@angular/common';
+import localeNl from '@angular/common/locales/nl';
+
+registerLocaleData(localeNl);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +26,7 @@ export const appConfig: ApplicationConfig = {
         };
         return new Configuration(params);
       }
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'nl' }
   ],
 };

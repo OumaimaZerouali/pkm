@@ -7,10 +7,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GetFolderNameByIdUseCase {
+public class CreateOrUpdateFolderUseCase {
     private final FolderRepository repository;
 
-    public Folder execute(String id) {
-        return repository.getFolderById(id).orElse(null);
+    public Folder execute(Folder folder) {
+        var existingFolder = repository.getFolderById(folder.getId());
+
+        if (existingFolder == null) {
+            return repository.updateFolderById(folder, folder.getId());
+        }
+
+        return repository.createFolder(folder);
     }
 }

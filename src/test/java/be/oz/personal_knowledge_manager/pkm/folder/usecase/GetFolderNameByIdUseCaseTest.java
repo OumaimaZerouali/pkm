@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -28,7 +30,7 @@ class GetFolderNameByIdUseCaseTest {
                 .name("Generated Notes")
                 .icon("")
                 .build();
-        when(repository.getFolderById("b0a45b271cde4528ade82b40f3643771")).thenReturn(folder);
+        when(repository.getFolderById("b0a45b271cde4528ade82b40f3643771")).thenReturn(Optional.of(folder));
 
         var result = useCase.execute("b0a45b271cde4528ade82b40f3643771");
 

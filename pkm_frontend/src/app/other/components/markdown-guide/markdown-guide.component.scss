@@ -1,0 +1,146 @@
+h2, h3 {
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin-top: 1.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+p, ul, ol, pre {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #555;
+}
+
+ul, ol {
+  padding-left: 2rem;
+}
+
+ul li, ol li {
+  margin-bottom: 0.8rem;
+}
+
+code {
+  background-color: #f4f4f4;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  overflow-x: auto;
+}
+
+hr {
+  border: 1px solid #ddd;
+  margin: 2rem 0;
+}
+
+a {
+  color: #007acc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+strong {
+  font-weight: bold;
+}
+
+em {
+  font-style: italic;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+table {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 0.8rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+table th {
+  background-color: #f7f7f7;
+}
+
+blockquote {
+  border-left: 4px solid #007acc;
+  padding-left: 1rem;
+  color: #555;
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+blockquote p {
+  margin: 0;
+}
+
+ul li, ol li {
+  font-size: 1rem;
+}
+
+ul li {
+  margin-bottom: 0.5rem;
+}
+
+li input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+li input[type="checkbox"]:checked {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
+
+.mermaid {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 6px;
+}
+
+.katex {
+  display: inline-block;
+  font-family: 'Georgia', serif;
+  font-size: 1.1rem;
+  color: #007acc;
+}
+
+@media (max-width: 768px) {
+  h2, h3 {
+    font-size: 1.5rem;
+  }
+
+  p, ul, ol, pre {
+    font-size: 0.9rem;
+  }
+
+  pre code {
+    font-size: 0.8rem;
+  }
+}
+
+

@@ -4,8 +4,8 @@ public record JoplinFolder(
         String id,
         String title,
         String parent_id,
-        int created_time,
-        int updated_time,
+        long created_time,
+        long updated_time,
         String icon
 ) {
 }

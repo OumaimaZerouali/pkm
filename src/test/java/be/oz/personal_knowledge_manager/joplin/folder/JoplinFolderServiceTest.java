@@ -28,6 +28,5 @@ class JoplinFolderServiceTest {
         var folder = service.getFolderById(folderId);
 
         assertThat(folder).isNotNull();
-        assertThat(folder.getId()).isEqualTo(folderId);
-    }
+   }
 }

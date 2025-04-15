@@ -75,7 +75,8 @@
 }
 
 .edit-button,
-.delete-button {
+.delete-button,
+.help-button {
   background-color: #272822;
   color: white;
   border: none;
@@ -91,10 +92,18 @@
 
 .delete-button {
   background-color: #e53935;
+
+  :hover {
+    background-color: #c62828;
+  }
 }
 
-.delete-button:hover {
-  background-color: #c62828;
+.help-button {
+  background-color: rgba(0, 0, 0, 0.29);
+
+  :hover {
+    background-color: rgba(0, 0, 0, 0.16);
+  }
 }
 
 .edit-form {
@@ -162,4 +171,10 @@
 .form-buttons button:last-child:hover {
   background-color: #bbb;
 }
+
+.markdown-modal {
+  border-radius: 10px;
+  border: none;
+}
+
 

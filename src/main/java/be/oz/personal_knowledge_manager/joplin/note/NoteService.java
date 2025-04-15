@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Instant;
@@ -32,7 +33,7 @@ public class NoteService implements NoteRepository {
 
     @Override
     public List<Note> findAllNotes() {
-        var url = joplinUrl + "/notes?token=" + joplinToken;
+        var url = joplinUrl + "/notes?token=" + joplinToken + "&fields=id,parent_id,title,body,author,source_url,created_time,updated_time";
         var response = restTemplate.getForObject(url, JoplinNotes.class);
 
         if (response == null || response.items() == null) {
@@ -48,10 +49,10 @@ public class NoteService implements NoteRepository {
                         .author(item.author())
                         .source_url(item.source_url())
                         .folder(item.parent_id())
-                        .created(Instant.ofEpochSecond(item.created_time())
+                        .created(Instant.ofEpochMilli(item.created_time())
                                 .atZone(ZoneId.systemDefault())
                                 .toLocalDateTime())
-                        .updated(Instant.ofEpochSecond(item.updated_time())
+                        .updated(Instant.ofEpochMilli(item.updated_time())
                                 .atZone(ZoneId.systemDefault())
                                 .toLocalDateTime())
                         .build())
@@ -64,34 +65,39 @@ public class NoteService implements NoteRepository {
             return Optional.empty();
         }
 
-        var url = joplinUrl + "/notes/" + id + "?token=" + joplinToken + "&fields=id,parent_id,title,body,author,source_url";
-        var response = restTemplate.getForObject(url, JoplinNote.class);
+        try {
+            var url = joplinUrl + "/notes/" + id + "?token=" + joplinToken + "&fields=id,parent_id,title,body,author,source_url,created_time,updated_time";
+            var response = restTemplate.getForObject(url, JoplinNote.class);
 
-        if (response == null) {
+            if (response == null) {
+                return Optional.empty();
+            }
+
+            Note note = Note.builder()
+                    .id(response.id())
+                    .title(response.title())
+                    .content(response.body())
+                    .content_html(response.body_html())
+                    .author(response.author())
+                    .source_url(response.source_url())
+                    .folder(response.parent_id())
+                    .created(Instant.ofEpochMilli(response.created_time())
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDateTime())
+                    .updated(Instant.ofEpochMilli(response.updated_time())
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDateTime())
+                    .build();
+
+            return Optional.of(note);
+        } catch (HttpClientErrorException.NotFound e) {
             return Optional.empty();
         }
-
-        Note note = Note.builder()
-                .id(response.id())
-                .title(response.title())
-                .content(response.body())
-                .content_html(response.body_html())
-                .author(response.author())
-                .source_url(response.source_url())
-                .folder(response.parent_id())
-                .created(Instant.ofEpochSecond(response.created_time())
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDateTime())
-                .updated(Instant.ofEpochSecond(response.updated_time())
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDateTime())
-                .build();
-
-        return Optional.of(note);
     }
     @Override
     public Note createNote(Note note) {
         Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", note.getId());
         requestBody.put("title", note.getTitle());
         requestBody.put("body", note.getContent());
         requestBody.put("folders", note.getFolder());

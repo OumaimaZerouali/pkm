@@ -1,85 +1,104 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
+import {DatePipe} from '@angular/common';
+
 import {FoldersService, NotesService} from '../../../libs/api';
 import {SidebarComponent} from '../other/components/sidebar/sidebar.component';
-import {DatePipe} from '@angular/common';
+import {ModalComponent} from '../other/components/modal/modal.component';
 
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
+  styleUrls: ['./note.component.scss'],
+  standalone: true,
   imports: [
     FormsModule,
     RouterLink,
     SidebarComponent,
-    DatePipe
-  ],
-  styleUrls: ['./note.component.scss']
+    DatePipe,
+    ModalComponent,
+  ]
 })
-export class NoteComponent implements OnInit {
+export class NoteComponent implements OnInit, OnChanges {
   notes: any[] = [];
-  originalNotes: any[] = [];
-  folderNames: Map<string, string> = new Map();
   folders: string[] = [];
-  selectedFolder: string = '';
+  newFolderName = '';
+  selectedFolder = '';
+  originalNotes: any[] = [];
   creatingNote = false;
+  creatingFolder = false;
+  folderNames = new Map<string, string>();
+  newNote = this.emptyNote();
 
-  newNote = {
-    title: '',
-    content: '',
-    author: '',
-    folder: ''
-  };
+  private readonly noteService = inject(NotesService);
+  private readonly folderService = inject(FoldersService);
+  private readonly router = inject(Router);
 
-  private noteService: NotesService = inject(NotesService);
-  private folderService: FoldersService = inject(FoldersService);
-  private router: Router = inject(Router);
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadNotes();
   }
 
-  loadNotes() {
-    this.noteService.getNotes().subscribe(notes => {
-      this.originalNotes = notes;
-      this.notes = [...notes];
-      this.loadFolderNames();
+  ngOnChanges(changes: SimpleChanges): void {
+    this.loadNotes();
+  }
+
+  openNoteModal() { this.creatingNote = true; }
+  closeNoteModal() { this.creatingNote = false; }
+
+  openFolderModal() { this.creatingFolder = true; }
+  closeFolderModal() { this.creatingFolder = false; }
+
+  createFolder(): void {
+    const folder = {
+      id: this.generateHexId(),
+      name: this.newFolderName,
+      icon: ''
+    };
+
+    this.folderService.createOrUpdateFolder(folder).subscribe(() => {
+      this.folderNames.set(folder.id, folder.name);
+      this.newFolderName = '';
+      this.closeFolderModal();
     });
   }
 
-  loadFolderNames() {
-    const folderIds = new Set<string>();
+  createNote(): void {
+    const id = this.generateHexId();
+    const folderName = this.folderNames.get(this.newNote.folder);
 
-    this.notes.forEach(note => {
-      if (note.folder && !this.folderNames.has(note.folder)) {
-        folderIds.add(note.folder);
+    this.folderService.getFolders(folderName).subscribe(folderId => {
+      if (!folderId || folderId.length === 0) {
+        console.error('Folder not found!');
+        return;
       }
-    });
 
-    folderIds.forEach(folderId => {
-      this.folderService.getFolderById(folderId).subscribe(folder => {
-        this.folderNames.set(folderId, folder.name);
-        this.updateFolders();
+      this.folderService.getFolderById(folderId[0].id).subscribe(folder => {
+        this.folderNames.set(folder.id, folder.name);
+
+        this.newNote.folder = folder.id;
+
+        const payload = {
+          id,
+          ...this.newNote,
+          created: new Date().toISOString(),
+          updated: new Date().toISOString()
+        };
+
+        this.noteService.createOrUpdateNote(payload).subscribe(() => {
+          this.creatingNote = false;
+          this.newNote = this.emptyNote();
+          this.updateFolderList();
+          this.loadNotes();
+
+          this.router.navigate(['/notes', id]);
+        });
       });
     });
   }
 
-  updateFolders() {
-    this.folders = Array.from(this.folderNames.values()).sort((a, b) =>
-      a.localeCompare(b)
-    );
-  }
-
-  getFolderName(folderId: string): string {
-    return this.folderNames.get(folderId) || 'Unknown Folder';
-  }
-
-  filterNotesByFolder() {
-    if (this.selectedFolder) {
-      this.notes = this.originalNotes.filter(note => this.getFolderName(note.folder) === this.selectedFolder);
-    } else {
-      this.notes = [...this.originalNotes];
-    }
+  goToChatbotPage(): void {
+    this.router.navigate(['/chat']);
   }
 
   onFolderSelected(folder: string): void {
@@ -87,34 +106,60 @@ export class NoteComponent implements OnInit {
     this.filterNotesByFolder();
   }
 
-  createNote() {
-    const id = this.generateHexId();
+  getFolderName(folderId: string): string {
+    return this.folderNames.get(folderId) || 'Unknown Folder';
+  }
 
-    const payload = {
-      id,
-      ...this.newNote,
-      created: new Date().toISOString(),
-      updated: new Date().toISOString()
-    };
+  protected loadNotes(): void {
+    this.noteService.getNotes().subscribe(notes => {
+      notes.sort((a, b) =>
+        new Date(b.updated ?? b.created ?? 0).getTime() -
+        new Date(a.updated ?? a.created ?? 0).getTime()
+      );
 
-    this.noteService.createOrUpdateNote(payload).subscribe(() => {
-      this.creatingNote = false;
-      this.resetNewNote();
-      this.loadNotes();
+      this.originalNotes = notes;
+      this.notes = [...notes];
+      this.loadFolderNames();
     });
   }
 
-  resetNewNote() {
-    this.newNote = {
+
+  private loadFolderNames(): void {
+    const folderIds = new Set<string>(
+      this.notes
+        .map(note => note.folder)
+        .filter(folder => folder && !this.folderNames.has(folder))
+    );
+
+    folderIds.forEach(folderId => {
+      this.folderService.getFolderById(folderId).subscribe(folder => {
+        this.folderNames.set(folderId, folder.name);
+        this.updateFolderList();
+      });
+    });
+  }
+
+  private updateFolderList(): void {
+    this.folders = Array.from(this.folderNames.values()).sort((a, b) =>
+      a.localeCompare(b)
+    );
+  }
+
+  private filterNotesByFolder(): void {
+    this.notes = this.selectedFolder
+      ? this.originalNotes.filter(
+        note => this.getFolderName(note.folder) === this.selectedFolder
+      )
+      : [...this.originalNotes];
+  }
+
+  private emptyNote() {
+    return {
       title: '',
       content: '',
       author: '',
       folder: ''
     };
-  }
-
-  goToChatbotPage() {
-    this.router.navigate(['/chat']);
   }
 
   private generateHexId(): string {

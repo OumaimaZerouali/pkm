@@ -1,18 +1,21 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DatePipe, Location} from '@angular/common';
 import {MarkdownModule} from 'ngx-markdown';
 import {FoldersService, NotesService} from '../../../libs/api';
 import {FormsModule} from '@angular/forms';
+import {MarkdownGuideComponent} from '../other/components/markdown-guide/markdown-guide.component';
 
 @Component({
   selector: 'app-note-details',
   templateUrl: './note-details.component.html',
   styleUrls: ['./note-details.component.scss'],
   standalone: true,
-  imports: [MarkdownModule, DatePipe, FormsModule],
+  imports: [MarkdownModule, DatePipe, FormsModule, MarkdownGuideComponent],
 })
 export class NoteDetailsComponent implements OnInit {
+  @ViewChild('markdownDialog') markdownDialog!: HTMLDialogElement;
+
   note: any;
   folder: any;
   editMode = false;

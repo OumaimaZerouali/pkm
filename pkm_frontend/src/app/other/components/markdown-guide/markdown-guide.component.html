@@ -1,0 +1,86 @@
+<h2>Markdown Guide</h2>
+<p>Markdown is a lightweight markup language for formatting text. Joplin uses <a href="https://commonmark.org/" target="_blank">CommonMark</a> with extensions like <a href="https://katex.org/" target="_blank">KaTeX</a> for math and <a href="https://mermaid.js.org/" target="_blank">Mermaid</a> for diagrams.</p>
+
+<h3>Text Formatting</h3>
+<ul>
+  <li><strong>Bold:</strong> <code>**bold**</code> → <strong>bold</strong></li>
+  <li><strong>Italic:</strong> <code>*italic*</code> → <em>italic</em></li>
+  <li><strong>Bold + Italic:</strong> <code>***bold italic***</code> → <strong><em>bold italic</em></strong></li>
+  <li><strong>Strikethrough:</strong> <code>~~text~~</code> → <del>text</del></li>
+</ul>
+
+<h3>Headings</h3>
+<ul>
+  <li><code># H1</code></li>
+  <li><code>## H2</code></li>
+  <li><code>### H3</code> (and so on)</li>
+</ul>
+
+<h3>Lists</h3>
+<ul>
+  <li><strong>Unordered:</strong> <code>- Item</code>, <code>* Item</code></li>
+  <li><strong>Ordered:</strong> <code>1. First</code>, <code>2. Second</code></li>
+  <li><strong>Nested:</strong> <pre><code>- Parent<br>&nbsp;&nbsp;- Child</code></pre></li>
+  <li><strong>Checkbox:</strong> <code>- [ ] Todo</code>, <code>- [x] Done</code></li>
+</ul>
+
+<h3>Links & Images</h3>
+<ul>
+  <li><strong>Link:</strong> <code>[OpenAI](https://openai.com)</code></li>
+  <li><strong>Image:</strong> <code>![Alt](image.jpg)</code></li>
+</ul>
+
+<h3>Code</h3>
+<ul>
+  <li><strong>Inline:</strong> <code>\`code\`</code> → <code>code</code></li>
+  <li><strong>Block:</strong> <pre><code>```js<br>console.log('Hello');<br>```</code></pre></li>
+</ul>
+
+<h3>Blockquotes</h3>
+<pre><code>> This is a quote</code></pre>
+
+<h3>Horizontal Rule</h3>
+<pre><code>---</code></pre>
+<hr />
+
+<h3>Tables</h3>
+<pre><code>| Name | Age |
+|------|-----|
+| Tom  | 30  |
+| Ana  | 25  |
+</code></pre>
+
+<h3>KaTeX (Math)</h3>
+<ul>
+  <li><strong>Inline:</strong> <code>$x = y + 2$</code> → \(x = y + 2\)</li>
+  <li><strong>Block:</strong> <pre><code>$$<br>\\frac&#123;a&#125;&#123;b&#125; = c<br>$$</code></pre></li>
+</ul>
+
+<h3>Mermaid Diagrams</h3>
+<pre><code>```mermaid
+graph TD;
+  A-->B;
+  B-->C;
+  C-->A;
+```</code></pre>
+
+<h3>Escaping Characters</h3>
+<p>Use <code>\</code> to escape: <code>\*</code>, <code>\#</code>, etc.</p>
+
+<h3>HTML Inside Markdown</h3>
+<p>You can mix raw HTML:</p>
+<pre><code>&lt;div class="box"&gt;Hello HTML&lt;/div&gt;</code></pre>
+
+<h3>Advanced Tips</h3>
+<ul>
+  <li>Use <code>&lt;br&gt;</code> for manual line breaks</li>
+  <li>Use double spaces at end of line for soft line breaks</li>
+  <li>Nested formatting like <code>**bold _italic_**</code> works</li>
+</ul>
+
+<p>
+  For more, visit
+  <a href="https://spec.commonmark.org/" target="_blank">CommonMark Spec</a>,
+  <a href="https://katex.org/docs/supported.html" target="_blank">KaTeX Docs</a>,
+  or <a href="https://mermaid.js.org/" target="_blank">Mermaid Docs</a>.
+</p>
