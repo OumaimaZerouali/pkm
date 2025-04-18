@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+
 @Service
 public class NoteService implements NoteRepository {
     private final String joplinUrl;
@@ -33,7 +34,7 @@ public class NoteService implements NoteRepository {
 
     @Override
     public List<Note> findAllNotes() {
-        var url = joplinUrl + "/notes?token=" + joplinToken + "&fields=id,parent_id,title,body,author,source_url,created_time,updated_time";
+        var url = joplinUrl + "/notes?token=" + joplinToken + "&fields=id,parent_id,title,body,author,source_url,created_time,updated_time,is_todo,todo_due,todo_completed";
         var response = restTemplate.getForObject(url, JoplinNotes.class);
 
         if (response == null || response.items() == null) {
@@ -53,6 +54,11 @@ public class NoteService implements NoteRepository {
                                 .atZone(ZoneId.systemDefault())
                                 .toLocalDateTime())
                         .updated(Instant.ofEpochMilli(item.updated_time())
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime())
+                        .todo(item.is_todo() == 1)
+                        .todo_completed(item.todo_completed() == 1)
+                        .todo_due(Instant.ofEpochMilli(item.todo_due())
                                 .atZone(ZoneId.systemDefault())
                                 .toLocalDateTime())
                         .build())
@@ -85,6 +91,11 @@ public class NoteService implements NoteRepository {
                             .atZone(ZoneId.systemDefault())
                             .toLocalDateTime())
                     .updated(Instant.ofEpochMilli(response.updated_time())
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDateTime())
+                    .todo(response.is_todo() == 1)
+                    .todo_completed(response.todo_completed() == 1)
+                    .todo_due(Instant.ofEpochMilli(response.todo_due())
                             .atZone(ZoneId.systemDefault())
                             .toLocalDateTime())
                     .build();

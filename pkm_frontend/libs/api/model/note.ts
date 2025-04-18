@@ -46,5 +46,17 @@ export interface Note {
      * The timestamp when the note was last updated
      */
     updated?: string;
+    /**
+     * Is note of type todo
+     */
+    todo?: boolean;
+    /**
+     * Is the todo completed
+     */
+    todo_completed?: boolean;
+    /**
+     * The timestamp that the todo is due
+     */
+    todo_due?: string;
 }
 

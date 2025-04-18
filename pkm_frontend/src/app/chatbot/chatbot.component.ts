@@ -12,11 +12,12 @@ import {
   NoteRequest
 } from '../../../libs/api';
 import {Router} from '@angular/router';
+import {ModalComponent} from '../other/components/modal/modal.component';
 
 @Component({
-  selector: 'app-chatbot',
+  selector: 'chatbot',
   templateUrl: './chatbot.component.html',
-  imports: [FormsModule, MarkdownPipe],
+  imports: [FormsModule, MarkdownPipe, ModalComponent],
   styleUrls: ['./chatbot.component.scss']
 })
 export class ChatbotComponent implements AfterViewChecked {
@@ -26,6 +27,7 @@ export class ChatbotComponent implements AfterViewChecked {
   isLoading = false;
   folderId: string | null = null;
   isModelSelectorVisible = false;
+  showModelInfoModal = false;
 
   availableModels: Model[] = [Model.Deepseek, Model.Gemma, Model.Llama3, Model.Mistral, Model.Codellama];
 
@@ -162,5 +164,13 @@ export class ChatbotComponent implements AfterViewChecked {
 
   goBack() {
     this.router.navigate(['/notes']);
+  }
+
+  toggleModelInfo() {
+    this.showModelInfoModal = !this.showModelInfoModal;
+  }
+
+  onModalClosed() {
+    this.showModelInfoModal = false;
   }
 }

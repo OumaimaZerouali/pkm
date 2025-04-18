@@ -63,7 +63,6 @@ public class AIController implements AiApi {
         }
 
         var title = createTitleBasedOnAIResponse(aiResponse);
-
         var newNote = Note.builder()
                 .title("Generated Note: " + title)
                 .author("AI Assistant")

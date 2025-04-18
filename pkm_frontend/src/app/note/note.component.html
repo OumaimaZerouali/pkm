@@ -1,8 +1,8 @@
 <div class="layout">
-  <app-sidebar
+  <sidebar
     [selectedFolder]="selectedFolder"
     (folderSelected)="onFolderSelected($event)"
-  ></app-sidebar>
+  ></sidebar>
 
   <div class="main-content">
     <div class="header-bar">
@@ -20,7 +20,7 @@
     </div>
 
     @if (creatingNote) {
-      <app-modal (closed)="closeNoteModal()">
+      <modal (closed)="closeNoteModal()">
         <div class="form-card">
           <h3>Create New Note</h3>
           <label>Title</label>
@@ -43,18 +43,18 @@
 
           <button (click)="createNote()">Save</button>
         </div>
-      </app-modal>
+      </modal>
     }
 
     @if (creatingFolder) {
-      <app-modal (closed)="closeFolderModal()">
+      <modal (closed)="closeFolderModal()">
         <div class="form-card">
           <h3>Create New Folder</h3>
           <label>Name</label>
           <input type="text" [(ngModel)]="newFolderName" />
           <button (click)="createFolder()">Create</button>
         </div>
-      </app-modal>
+      </modal>
     }
 
     <div class="note-table-wrapper">

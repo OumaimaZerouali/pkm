@@ -40,7 +40,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/ai/chat").permitAll()
                         .requestMatchers(HttpMethod.POST, "/ai/notes").permitAll()
                         .requestMatchers("/prompt/**").permitAll()
-
                         .anyRequest().permitAll()
                 );
 

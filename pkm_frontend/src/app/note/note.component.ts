@@ -8,7 +8,7 @@ import {SidebarComponent} from '../other/components/sidebar/sidebar.component';
 import {ModalComponent} from '../other/components/modal/modal.component';
 
 @Component({
-  selector: 'app-note',
+  selector: 'note',
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss'],
   standalone: true,
@@ -122,7 +122,6 @@ export class NoteComponent implements OnInit, OnChanges {
       this.loadFolderNames();
     });
   }
-
 
   private loadFolderNames(): void {
     const folderIds = new Set<string>(

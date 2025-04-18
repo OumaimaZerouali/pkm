@@ -17,6 +17,9 @@ public class Note {
     private String author;
     private String source_url;
     private String folder;
+    private boolean todo;
+    private LocalDateTime todo_due;
+    private boolean todo_completed;
     private LocalDateTime created;
     private LocalDateTime updated;
 }

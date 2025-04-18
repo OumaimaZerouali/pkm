@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'app-markdown-guide',
+  selector: 'markdown-guide',
   imports: [],
   templateUrl: './markdown-guide.component.html',
   styleUrl: './markdown-guide.component.scss'

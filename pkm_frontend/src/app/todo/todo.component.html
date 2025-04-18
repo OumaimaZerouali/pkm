@@ -1,0 +1,49 @@
+<div class="layout">
+  <sidebar
+    [selectedFolder]="selectedFolder"
+    (folderSelected)="onFolderSelected($event)"
+  ></sidebar>
+
+  <div class="main-content">
+    <div class="header-bar">
+      <h2>Todo's</h2>
+    </div>
+
+    <div class="todo-table-wrapper">
+      @if (todos.length === 0) {
+        <div>No todos found.</div>
+      }
+
+      <table class="note-table">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Completed</th>
+          <th>Due Date</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (todo of todos; track todo.id) {
+            <tr>
+              <td>{{ todo.title }}</td>
+              <td>
+                <input type="checkbox" [checked]="!!todo.todo_completed" disabled />
+              </td>
+              <td>
+                @if (todo.todo_due) {
+                  {{ todo.todo_due | date:'medium' }}
+                } @else {
+                  N/A
+                }
+              </td>
+              <td>
+                <a [routerLink]="['/notes', todo.id]" class="btn-view">View</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

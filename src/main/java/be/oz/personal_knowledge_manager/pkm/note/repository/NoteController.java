@@ -43,7 +43,10 @@ public class NoteController implements NotesApi {
                 note.getAuthor(),
                 note.getContent(),
                 note.getCreated(),
-                note.getUpdated()
+                note.getUpdated(),
+                note.isTodo(),
+                note.isTodo_completed(),
+                note.getTodo_due()
         ));
     }
 
@@ -66,6 +69,9 @@ public class NoteController implements NotesApi {
                 .content(note.getContent())
                 .contentHtml(note.getContent_html())
                 .sourceUrl(note.getSource_url())
+                .todo(note.isTodo())
+                .todoCompleted(note.isTodo_completed())
+                .todoDue(note.getTodo_due())
                 .build());
     }
 
@@ -83,6 +89,9 @@ public class NoteController implements NotesApi {
                         .content(note.getContent())
                         .contentHtml(note.getContent_html())
                         .sourceUrl(note.getSource_url())
+                        .todoDue(note.getTodo_due())
+                        .todoCompleted(note.isTodo_completed())
+                        .todo(note.isTodo())
                         .build()
         ).toList());
     }

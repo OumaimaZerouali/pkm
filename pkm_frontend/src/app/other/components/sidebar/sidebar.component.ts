@@ -1,8 +1,9 @@
 import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
 import {FoldersService} from '../../../../../libs/api';
+import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
@@ -13,6 +14,7 @@ export class SidebarComponent implements OnInit {
   folders: string[] = [];
   folderNames: Map<string, string> = new Map();
 
+  private router: Router = inject(Router);
   private folderService: FoldersService = inject(FoldersService);
 
   ngOnInit(): void {
@@ -33,5 +35,9 @@ export class SidebarComponent implements OnInit {
   onFolderClick(folder: string): void {
     this.selectedFolder = folder;
     this.folderSelected.emit(folder);
+
+    if (this.selectedFolder === "Todo") {
+      this.router.navigate(['/todo']);
+    }
   }
 }

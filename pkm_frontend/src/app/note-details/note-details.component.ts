@@ -7,7 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {MarkdownGuideComponent} from '../other/components/markdown-guide/markdown-guide.component';
 
 @Component({
-  selector: 'app-note-details',
+  selector: 'note-details',
   templateUrl: './note-details.component.html',
   styleUrls: ['./note-details.component.scss'],
   standalone: true,
@@ -55,7 +55,7 @@ export class NoteDetailsComponent implements OnInit {
   }
 
   updateNote(): void {
-    this.noteService.createOrUpdateNote(this.note.id, this.note).subscribe((updatedNote) => {
+    this.noteService.createOrUpdateNote(this.note).subscribe((updatedNote) => {
       this.note = updatedNote;
       this.editMode = false;
     });

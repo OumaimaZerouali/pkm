@@ -287,6 +287,16 @@ components:
           type: string
           format: date-time
           description: The timestamp when the note was last updated
+        todo:
+          type: boolean
+          description: Is note of type todo
+        todo_completed:
+          type: boolean
+          description: Is the todo completed
+        todo_due:
+          type: string
+          format: date-time
+          description: The timestamp that the todo is due
     folder:
       type: object
       required:

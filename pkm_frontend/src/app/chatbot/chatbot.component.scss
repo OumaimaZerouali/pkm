@@ -69,16 +69,15 @@
 }
 
 input {
-  flex: 1;
+  flex: 3;
   padding: 12px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  width: 60%;
 }
 
 button {
-  flex: 0 0 18%;
+  flex: 1;
   background-color: #272822;
   color: white;
   border: none;
@@ -96,26 +95,12 @@ button:disabled {
   background-color: #ccc;
 }
 
-.loading-indicator {
+.model-selector-button-help {
+  flex: 0 0 auto;
+  padding: 10px 14px;
   font-size: 14px;
-  color: #888;
-  text-align: center;
-}
-
-.model-selector-button {
-  flex: 0 0 18%;
-  background-color: #171313;
-  color: white;
-  border: none;
-  padding: 12px;
+  background-color: #555;
   border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s;
-
-  &:hover {
-    background-color: #333;
-  }
 }
 
 .model-selector {
@@ -133,5 +118,15 @@ button:disabled {
     border: 1px solid #ccc;
     border-radius: 6px;
     background-color: #f7f7f7;
+  }
+}
+
+app-modal {
+  h2 {
+    margin-top: 0;
+  }
+
+  p {
+    margin-bottom: 0.75rem;
   }
 }
